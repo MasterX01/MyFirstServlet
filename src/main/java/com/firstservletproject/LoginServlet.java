@@ -2,6 +2,7 @@ package com.firstservletproject;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.regex.Pattern;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -26,10 +27,11 @@ public class LoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String user = request.getParameter("user");
 		String pwd = request.getParameter("password");
-		
+		String userRegex = "^[A-Z]{1}+[a-z]{2,}";
+		String pwdRegex = "^.*(?=.*[A-Z])(?=.*[0-9])([a-z])(?=.*[@#$%^&+=])(?=.{8,}).*$";
 		String userTest = getServletConfig().getInitParameter("user");
 		String pwdTest = getServletConfig().getInitParameter("password");
-		if(userTest.equals(userTest) && pwdTest.equals(pwd)) {
+		if(Pattern.matches(pwdRegex, pwd) && Pattern.matches(userRegex, user)) {
 			request.setAttribute("user", user);
 			request.getRequestDispatcher("LoginSuccess.jsp").forward(request, response);
 		}else {
